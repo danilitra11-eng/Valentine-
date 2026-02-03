@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Valentine ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 40px 60px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    h1 {
+      color: #e63946;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      position: relative;
+      height: 100px;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    #yes {
+      background: #e63946;
+      color: white;
+      margin-right: 20px;
+    }
+
+    #no {
+      background: #adb5bd;
+      color: #333;
+      position: absolute;
+      left: 120px;
+    }
+
+    .result {
+      display: none;
+    }
+
+    .result img {
+      max-width: 300px;
+      border-radius: 20px;
+      margin-top: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .good {
+      font-size: 36px;
+      color: #e63946;
+      margin-top: 20px;
+    }
+
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 24px;
+      animation: floatUp 4s linear forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="card">
+    <h1>Will you be my Valentine? ❤️</h1>
+
+    <div class="buttons" id="buttons">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
+
+    <div class="result" id="result">
+      <div class="good">GOOD ❤️</div>
+      <img src="us.jpg" alt="Us">
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('no');
+    const yesBtn = document.getElementById('yes');
+    const buttons = document.getElementById('buttons');
+    const result = document.getElementById('result');
+
+    function moveNo() {
+      const card = document.getElementById('card');
+      const rect = card.getBoundingClientRect();
+
+      const x = Math.random() * (rect.width - noBtn.offsetWidth);
+      const y = Math.random() * (rect.height - noBtn.offsetHeight);
+
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    }
+
+    setInterval(moveNo, 400);
+    noBtn.addEventListener('mouseenter', moveNo);
+    noBtn.addEventListener('touchstart', e => {
+      e.preventDefault();
+      moveNo();
+    });
+
+    yesBtn.addEventListener('click', () => {
+      buttons.style.display = 'none';
+      result.style.display = 'block';
+      startHearts();
+    });
+
+    function startHearts() {
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (20 + Math.random() * 20) + 'px';
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 4000);
+      }, 300);
+    }
+  </script>
+
+</body>
+</html>
