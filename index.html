@@ -31,9 +31,14 @@
       margin-bottom: 30px;
     }
 
+    /* כפתורים אחד ליד השני */
     .buttons {
       position: relative;
-      height: 110px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      height: 90px;
     }
 
     button {
@@ -43,27 +48,27 @@
       border-radius: 30px;
       cursor: pointer;
       transition: 0.2s ease;
+      white-space: nowrap;
     }
 
     #yes {
       background: #e63946;
       color: white;
-      margin-right: 20px;
       animation: pulse 1.5s infinite;
+      z-index: 1;
     }
 
     #no {
       background: #adb5bd;
       color: #333;
-      position: absolute;
-      left: 150px;
-      top: 0;
+      position: relative;
+      z-index: 1;
     }
 
     /* רטט עדין ל-YES */
     @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.07); }
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.07); }
       100% { transform: scale(1); }
     }
 
@@ -129,7 +134,7 @@
     const card = document.getElementById('card');
 
     let noAttempts = 0;
-    let noEscaped = false;
+    const maxEscapes = 5;
 
     function moveNo() {
       const rect = card.getBoundingClientRect();
@@ -139,26 +144,26 @@
       const x = Math.random() * maxX;
       const y = Math.random() * maxY;
 
+      noBtn.style.position = 'absolute';
       noBtn.style.left = x + 'px';
       noBtn.style.top = y + 'px';
     }
 
-    // ❗ No מגיב רק בלחיצה
+    // ❗ No בורח רק ב-5 הפעמים הראשונות
     noBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+      if (noAttempts < maxEscapes) {
+        e.preventDefault();
+        e.stopPropagation();
 
-      noAttempts++;
-
-      // בורח רק בפעם הראשונה
-      if (!noEscaped) {
+        noAttempts++;
         moveNo();
-        noEscaped = true;
-      }
 
-      // אחרי 3 ניסיונות – שינוי טקסט
-      if (noAttempts >= 3) {
-        noBtn.textContent = "Okay okay… choose wisely 😉";
+        if (noAttempts === maxEscapes) {
+          noBtn.textContent = "Okay… you win 😌";
+        }
+      } else {
+        // אחרי 5 פעמים – לחיצה רגילה
+        alert("Fair enough 😄");
       }
     });
 
