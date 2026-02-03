@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Valentine ❤️</title>
+
   <style>
     body {
       margin: 0;
@@ -22,6 +23,7 @@
       text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       position: relative;
+      min-width: 300px;
     }
 
     h1 {
@@ -52,7 +54,8 @@
       background: #adb5bd;
       color: #333;
       position: absolute;
-      left: 120px;
+      left: 140px;
+      top: 0;
     }
 
     .result {
@@ -92,6 +95,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="card" id="card">
@@ -113,24 +117,24 @@
     const yesBtn = document.getElementById('yes');
     const buttons = document.getElementById('buttons');
     const result = document.getElementById('result');
+    const card = document.getElementById('card');
 
     function moveNo() {
-      const card = document.getElementById('card');
       const rect = card.getBoundingClientRect();
 
-      const x = Math.random() * (rect.width - noBtn.offsetWidth);
-      const y = Math.random() * (rect.height - noBtn.offsetHeight);
+      const maxX = rect.width - noBtn.offsetWidth;
+      const maxY = rect.height - noBtn.offsetHeight;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
 
       noBtn.style.left = x + 'px';
       noBtn.style.top = y + 'px';
     }
 
-    setInterval(moveNo, 400);
-    noBtn.addEventListener('mouseenter', moveNo);
-    noBtn.addEventListener('touchstart', e => {
-      e.preventDefault();
-      moveNo();
-    });
+    // ❗ קופץ רק כשמנסים ללחוץ
+    noBtn.addEventListener('mousedown', moveNo);
+    noBtn.addEventListener('touchstart', moveNo);
 
     yesBtn.addEventListener('click', () => {
       buttons.style.display = 'none';
