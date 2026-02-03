@@ -23,7 +23,7 @@
       text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       position: relative;
-      min-width: 300px;
+      min-width: 320px;
     }
 
     h1 {
@@ -33,7 +33,7 @@
 
     .buttons {
       position: relative;
-      height: 100px;
+      height: 110px;
     }
 
     button {
@@ -42,20 +42,29 @@
       border: none;
       border-radius: 30px;
       cursor: pointer;
+      transition: 0.2s ease;
     }
 
     #yes {
       background: #e63946;
       color: white;
       margin-right: 20px;
+      animation: pulse 1.5s infinite;
     }
 
     #no {
       background: #adb5bd;
       color: #333;
       position: absolute;
-      left: 140px;
+      left: 150px;
       top: 0;
+    }
+
+    /* רטט עדין ל-YES */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+      100% { transform: scale(1); }
     }
 
     .result {
@@ -119,9 +128,11 @@
     const result = document.getElementById('result');
     const card = document.getElementById('card');
 
+    let noAttempts = 0;
+    let noEscaped = false;
+
     function moveNo() {
       const rect = card.getBoundingClientRect();
-
       const maxX = rect.width - noBtn.offsetWidth;
       const maxY = rect.height - noBtn.offsetHeight;
 
@@ -132,9 +143,24 @@
       noBtn.style.top = y + 'px';
     }
 
-    // ❗ קופץ רק כשמנסים ללחוץ
-    noBtn.addEventListener('mousedown', moveNo);
-    noBtn.addEventListener('touchstart', moveNo);
+    // ❗ No מגיב רק בלחיצה
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      noAttempts++;
+
+      // בורח רק בפעם הראשונה
+      if (!noEscaped) {
+        moveNo();
+        noEscaped = true;
+      }
+
+      // אחרי 3 ניסיונות – שינוי טקסט
+      if (noAttempts >= 3) {
+        noBtn.textContent = "Okay okay… choose wisely 😉";
+      }
+    });
 
     yesBtn.addEventListener('click', () => {
       buttons.style.display = 'none';
